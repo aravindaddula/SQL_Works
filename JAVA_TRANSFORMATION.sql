@@ -1,0 +1,12 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [ID]
+      ,[TS]
+  FROM [ITCRATS].[dbo].[DATES]
+
+  CREATE TABLE CONTACTNUMS(id int identity(1,1),PHNUMS VARCHAR(50))
+    CREATE TABLE CONTACTNUMS_TGT(id int identity(1,1),PHNUMS VARCHAR(50))
+
+  INSERT INTO CONTACTNUMS values('7730061615~8008673818~9182901234'),('9930061615~9108673818')
+
+select * from CONTACTNUMS
+select * from CONTACTNUMS_TGT

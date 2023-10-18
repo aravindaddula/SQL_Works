@@ -1,0 +1,5 @@
+select * from emp_tgt_unconnected
+
+SELECT * FROM DEPT, EMP
+
+SELECT * FROM DEPT D LEFT JOIN EMP E ON D.DEPTNO=E.DEPTNO 
