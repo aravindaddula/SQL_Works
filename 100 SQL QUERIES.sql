@@ -1,4 +1,10 @@
-	
+create table cricket(country varchar(20),id int)
+alter table cricket add id int;
+insert into cricket values('India',1),('Sri Lanka',2), ('New Zealand',3), ('England',4), ('USA',5)
+select * from cricket
+
+
+================================	
 
     1. Display all the information of the EMP table?
 	

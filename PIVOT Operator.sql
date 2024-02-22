@@ -59,4 +59,3 @@ SELECT product_name,COUNT(*) FROM production.products group by product_name
 SELECT * FROM SALES.ORDERS
 SELECT * from sales.customers
 select * from sales.customers AS Cust join production.categories CAT  
-

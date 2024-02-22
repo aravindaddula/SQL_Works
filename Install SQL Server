@@ -1,0 +1,20 @@
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg;
+curl -fsSL https://packages.microsoft.com/config/ubuntu/22.04/mssql-server-2022.list | sudo tee /etc/apt/sources.list.d/mssql-server-2022.list;
+sudo apt-get update;
+sudo apt-get install -y mssql-server;
+sudo /opt/mssql/bin/mssql-conf setup;
+
+==Above command is for setup , after completion follow below
+
+systemctl status mssql-server --no-pager
+
+
+==for more details follow this url
+https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver16&tabs=ubuntu2204
+
+
+Settings:
+1.change EXECUTE command in keybinding.json file
+2.add mssql server at system startup 
+sudo systemctl enable mysql
+sudo systemctl enable mssql-server --no-pager

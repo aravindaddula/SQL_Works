@@ -1,69 +1,90 @@
-Here is a SQL interview question asked in a data analyst interview.
-
-
-We have two tables people and relations. The people table contains the details of each individual and the relations table contains the parent-child relationship between two individuals.
-
+-- Here is a SQL interview question asked in a data analyst interview.
+create database interview_prep;
+use interview_prep;
+-- Task :
 create table people
-(id int primary key not null,
-name varchar(20),
-gender char(2));
+(
+	id int primary key not null,
+	name varchar(20),
+	gender char(2)
+);
 
 create table relations
 (
-c_id int,
-p_id int,
-FOREIGN KEY (c_id) REFERENCES people(id),
-foreign key (p_id) references people(id)
+	child_id int,
+	parent_id int,
+	FOREIGN KEY (child_id) REFERENCES people(id),
+	foreign key (parent_id) references people(id)
 );
 
-
-insert into people (id, name, gender)
+insert into people
+	(id, name, gender)
 values
-(107,'Days','F'),
-(145,'Hawbaker','M'),
-(155,'Hansel','F'),
-(202,'Blackston','M'),
-(227,'Criss','F'),
-(278,'Keffer','M'),
-(305,'Canty','M'),
-(329,'Mozingo','M'),
-(425,'Nolf','M'),
-(534,'Waugh','M'),
-(586,'Tong','M'),
-(618,'Dimartino','M'),
-(747,'Beane','M'),
-(878,'Chatmon','F'),
-(904,'Hansard','F');
+	(107, 'Days', 'F'),
+	(145, 'Hawbaker', 'M'),
+	(155, 'Hansel', 'F'),
+	(202, 'Blackston', 'M'),
+	(227, 'Criss', 'F')
+,
+	(278, 'Keffer', 'M'),
+	(305, 'Canty', 'M'),
+	(329, 'Mozingo', 'M'),
+	(425, 'Nolf', 'M'),
+	(534, 'Waugh', 'M'),
+	(586, 'Tong', 'M'),
+	(618, 'Dimartino', 'M'),
+	(747, 'Beane', 'M'),
+	(878, 'Chatmon', 'F'),
+	(904, 'Hansard', 'F');
 
-insert into relations(c_id, p_id)
+insert into relations
+	(child_id, parent_id)
 values
-(145, 202),
-(145, 107),
-(278,305),
-(278,155),
-(329, 425),
-(329,227),
-(534,586),
-(534,878),
-(618,747),
-(618,904);
-
-Question : -Write a query that prints the names of a child and his parents in individual columns respectively in order of the name of the child as shown in the picture.
-
-I have solved this problem with 3 methods.
-
-
-=======================================
+	(145, 202),
+	(145, 107),
+	(278, 305),
+	(278, 155),
+	(329, 425),
+	(329, 227),
+	(534, 586),
+	(534, 878),
+	(618, 747),
+	(618, 904);
+/*
+We have two tables people and relations. The people table contains the details of each individual 
+and the relations table contains the parent-child relationship between two individuals.
+Question : -Write a query that prints the names of a child and his parents in individual columns respectively 
+in order of the name of the child as shown in the picture.
+*/
+-- Solution-- 145,202
+-- select child details
+with
+	child_info
+	as
+	(
+		select id, c.name, c.gender, r.child_id, r.parent_id as parent_id
+		from people as c join relations as r on c.id=r.child_id
+	),-- get parent details
+	parent_info
+	as
+	(
+		select ch.id as child_id, ch.name as child_name, ch.gender, p.name, p.gender as parent_gender, p.id
+		from child_info as ch
+			join people as p on ch.parent_id=p.id
+	)
+select child_id, child_name, gender
+, max(case when parent_gender='M' then name else '' end) as father_name
+, max(case when parent_gender='F' then name else '' end) as mother_name
+from parent_info
+group by child_id,child_name,gender
+/*
+Task
 Here is a very interesting SQL problem asked in a fintech startup.
-
 Write a SQL to find trade couples satisfying following conditions for each stock :
 
 1- The trades should be within 10 seconds of window
-
 2- The prices difference between the trades should be more than 10%
-
 here is the ready script:
-
 Create Table Trade_tbl(
 TRADE_ID varchar(20),
 Trade_Timestamp time,
@@ -79,16 +100,17 @@ Insert into Trade_tbl Values('TRADE4','10:01:09','ITJunction4All',300,32)
 Insert into Trade_tbl Values('TRADE5','10:10:00','ITJunction4All',-100,19)
 Insert into Trade_tbl Values('TRADE6','10:10:01','ITJunction4All',-300,19)
 
+*/
 
-=======================================
-
+------------------------------------------------
+/*
 There is a cool SQL keyword that can reduce your subqueries.
 
 
 
 I am talking about QUALIFY.
 
-Suppose we have a table called "Sales" with the following columns: "Product", "Region", and "Revenue". We want to find the top-selling product in each region based on revenue.
+Suppose we have a table called 'Sales' with the following columns: 'Product', 'Region', and 'Revenue'. We want to find the top-selling product in each region based on revenue.
 
 In traditional SQL you will write the below SQL :
 
@@ -116,12 +138,10 @@ It was first introduced in Teradata and few other modern databases have adopted 
 
 Does your database support this keyword? Let me know in the comments section.
 
-
-=======================================
-
+*/
+-------------------------------------------
+/*
 An organization is looking to hire candidates for their junior and senior positions.
-
-
 They have a total quota/limit of 50000$ in all , they have to first fill up the senior positions and then fill up the junior positions.
 
 There are 4 test cases , write a SQL query to satisfy all the testcases.
@@ -144,11 +164,11 @@ Expected O/p: In the above case the total salary of seniors is 30000$ , so id 4 
 
 For all 4 test cases and solutions check out the link in the comments section.
 
+*/
+-------------------------------------------
 
-=======================================
+/*
 This is a very common mistake anyone can do when working with SQLs.
-
-
 Let say you are calculating a percentage value by dividing 2 columns. If both the columns are integer then you will get output as integer only.
 
 For example 90/100 will be 0 instead of 0.9.
@@ -158,11 +178,11 @@ One quick trick I use is multiply anyone of the column by 1.0 to make it decimal
 
 Instead of doing numerator/denominator, I will do 1.0 * numerator / denominator. This will give you 0.9.
 
+*/
+-------------------------------------------
 
-
-=======================================
+/*
 Paypal SQL Interview Question asked in Data Engineer Interview for Sunday workout 💪
-
 
 Table1:-employee_checkin_details
 
@@ -188,14 +208,12 @@ Write an sql code to find the output table as below
 
 employeeid ,employee_default_phone_number, totalentry,totallogin,totallogout,latestlogin,latestlogout
 
+*/
+-------------------------------------------
 
-=======================================
+/*
 Uber SQL Interview problem to test your problem solving before the next interview.
-
-
-
 Write a query to find total rides and profit rides by each driver.
-
 Profit ride is when the end location of the current ride is the same as the start location of the next ride.
 
 It is not necessary that the end time of the current ride should be the same as the start time of the next ride to qualify as a profit ride.
@@ -210,8 +228,10 @@ insert into drivers values('dri_1', '09:00', '09:30', 'a','b'),('dri_1', '09:30'
 insert into drivers values('dri_1', '12:00', '12:30', 'f','g'),('dri_1', '13:30', '14:30', 'c','h');
 insert into drivers values('dri_2', '12:15', '12:30', 'f','g'),('dri_2', '13:30', '14:30', 'c','h');
 
+*/
+-------------------------------------------
 
-=======================================
+/*
 Let's understand slowly changing dimensions with simple examples (scd1 and scd2)
 
 Slowly changing dimensions (SCDs) are used in data warehousing to describe how data changes over time. In a typical data warehouse, the data is often updated, inserted, or deleted on a regular basis. SCDs help to manage these changes and maintain a historical record of the data.
@@ -260,7 +280,9 @@ Few things to note here :
 
 There is one more scd type 3 . Let's see who can explain it with this simple example. comments section is waiting for you.
 
-=======================================
+*/
+
+/*
 Best practices for writing SQL queries:
 
 1- Write SQL keywords in capital letters.
@@ -281,10 +303,11 @@ Best practices for writing SQL queries:
 
 9- If you know there are no duplicates in 2 tables, use UNION ALL instead of UNION for better performance.
 
-=======================================
+*/
+
+-------------------------------------------
+/*
 I would have solved hundreds of SQL problems based on the employee and department table in the last 10-12 years.
-
-
 But this problem is really a tricky one.
 
 Asked in a PayPal interview here is the problem statement:
@@ -327,8 +350,9 @@ insert into emp
 values (10, 'Rakesh',300,7000,6,50);
 
 Give it a shot before checking out the solution in the comments section.
-
-=======================================
+*/
+-------------------------------------------
+/*
 Is your salary more than your manager's salary ??
 
 
@@ -538,7 +562,7 @@ There is a cool SQL keyword that can reduce your subqueries.
 
 I am talking about QUALIFY.
 
-Suppose we have a table called "Sales" with the following columns: "Product", "Region", and "Revenue". We want to find the top-selling product in each region based on revenue.
+Suppose we have a table called 'Sales' with the following columns: 'Product', 'Region', and 'Revenue'. We want to find the top-selling product in each region based on revenue.
 
 In traditional SQL you will write the below SQL :
 
@@ -811,11 +835,149 @@ create table drivers(id varchar(10), start_time time, end_time time, start_loc v
 insert into drivers values('dri_1', '09:00', '09:30', 'a','b'),('dri_1', '09:30', '10:30', 'b','c'),('dri_1','11:00','11:30', 'd','e');
 insert into drivers values('dri_1', '12:00', '12:30', 'f','g'),('dri_1', '13:30', '14:30', 'c','h');
 insert into drivers values('dri_2', '12:15', '12:30', 'f','g'),('dri_2', '13:30', '14:30', 'c','h');
+*/
+-------------------------------------------
+/*
+create table interview_prep..Companies(c_id int,company_name varchar(50)
+	,feb1 DECIMAL(4,1),feb2 DECIMAL(4,1),feb3 DECIMAL(4,1),feb4 DECIMAL(4,1),feb5 DECIMAL(4,1));
+;
+insert into interview_prep..Companies values
+(1, 'Quantum Innovations', 12.5, 14.5, 16.5, 18.5, 20.5),
+(2, 'Stellar Solutions', 14.5, 16.5, 18.5, 20.5, 22.5),
+(3, 'Nebula Dynamics', 16.5, 18.5, 20.5, 22.5, 24.5),
+(4, 'Fusion Enterprises', 18.5, 20.5, 22.5, 24.5, 26.5),
+(5, 'Celestial Technologies', 20.5, 22.5, 24.5, 26.5, 28.5)
+;
 
-=======================================
+select * from interview_prep.dbo.Companies ;
 
-=======================================
+Task from pyspark:Task - The dataset includes company_id, company_name, and multiple date columns representing the stock prices of the company. 
+The task is to generate a new dataset with only three columns, 'company_name', 'Date', 'Stock_price'.
+*/
+;
 
-=======================================
+SELECT c_id, company_name, Dates
+,(case dates
+	when '2024-02-01' then feb1
+	when '2024-02-02' then feb2
+	when '2024-02-03' then feb3
+	when '2024-02-04' then feb4
+	else feb5
+end) as Stock_Price
+FROM interview_prep.dbo.Companies as c
+ cross join
+(values ('2024-02-01'),
+		('2024-02-02'),
+		('2024-02-03'),
+		('2024-02-04'),
+		('2024-02-05'))
+as dateColumn(Dates)
 
-=======================================
+------------------------
+/* 
+CREATE TABLE interview_prep..book_issued (s_id int,sname varchar(20),book_name varchar(50));
+insert into interview_prep..book_issued values
+(101 ,'Mark' , 'White Tiger'),
+(102 ,'Ria' , 'The Fountainhead'),
+(102 ,'Ria' , 'The Seceret History'),
+(101 ,'Mark' , 'Bhagwad Gita'),
+(103 ,'Loi' , 'The Fountainhead')
+
+5.Task--we have a dataset representing books issued by students, and we want to aggregate the books
+for each student.Multiple books should be shown separated by ';'
+*/
+
+SELECT 
+	s_id,sname,STRING_AGG(book_name,';') as all_books
+from interview_prep.dbo.book_issued
+GROUP by s_id,sname --,book_name
+
+
+/*
+create table interview_prep..arrange_nulls(id int,cust_name varchar(50),amount int);
+insert into interview_prep..arrange_nulls VALUES
+(1, 'Aditya Sen' , NUll),
+(2, 'Bikramaditya' , 200),
+(3, 'Mark T' , 100),
+(4, 'D K aditya' , null),
+(5, 'Danny' , 500),
+(6, 'Eli' , 300)
+
+
+1.'Arranging a column with null values in ascending or descending order.'
+Task - Sort the salary column of the dataframe :
+
+*/
+--a) in ascending order with NULL values at the top
+
+select * from interview_prep..arrange_nulls 
+ORDER by amount 
+
+--b) in ascending order with NULL values at the bottom
+
+	select * from interview_prep..arrange_nulls 
+ORDER by (case when amount is null then 1 else 0 end)
+
+
+--c) in descending order with NULL values at the top
+	select * from interview_prep..arrange_nulls 
+ORDER by (case when amount is null then 1 else 0 end) DESC
+
+--d)in descending order with NULL values at the bottom
+	select * from interview_prep..arrange_nulls 
+ORDER by (case when amount is null then 0 else 1 end) DESC
+
+
+
+
+--------------
+
+Karen is working on a complex business requirement. She has created an Employee table with four columns (Empid, empname, Department, and Salary). She wants to display EmpID, Department, and Salary of the fifth lowest salary. How can she achieve this?
+Empid	Empname	Department	Salary
+1001	Bob	Sales	10000
+1002	Abitom	Finance	20000
+1003	Jim	Sales	14000
+1004	Preston	IT	16000
+1005	VictoriaFinance	11000
+1006	Allen	IT	14000
+1007	Sam	Finance	10000
+1008	Cole	IT	12000
+1009	Jerry	Sales	14000
+1010	Thiery	Sales	11000
+
+--------------
+SQL
+SQL
+Question 12 of 15
+Angela is working on a complex requirement for which she has written a query:
+Order By Salary)
+Select Empid, Empname, Salary, Rank() Over (Partition By Department,
+From Employee.
+Identify which operator will be used for this query execution.
+Quick Note
+If the question is same as the last one or showing blank content, please click "Reload Question"
+Assert Operator
+Segment Operator
+Hash Match Operator
+Lazy Spool operator
+
+--------
+Problem Statement
+Write a SQL query to create Points table.
+This points table will contain 4 column team name, matches played by team, matches won, matches lost.
+
+📅Table schema
+create table icc_world_cup
+(
+Team_1 Varchar(20),
+Team_2 Varchar(20),
+Winner Varchar(20)
+);
+INSERT INTO icc_world_cup values('India','SL','India');
+INSERT INTO icc_world_cup values('SL','Aus','Aus');
+INSERT INTO icc_world_cup values('SA','Eng','Eng');
+INSERT INTO icc_world_cup values('Eng','NZ','NZ');
+INSERT INTO icc_world_cup values('Aus','India','India');
+
+
+---------
