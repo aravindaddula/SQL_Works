@@ -12,6 +12,8 @@ systemctl status mssql-server --no-pager
 ==for more details follow this url
 https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver16&tabs=ubuntu2204
 
+Username: sa
+pwd : Aa7730061615@@
 
 Settings:
 1.change EXECUTE command in keybinding.json file

@@ -818,10 +818,7 @@ insert into UserActivity values
 =======================================
 Uber SQL Interview problem to test your problem solving before the next interview.
 
-
-
 Write a query to find total rides and profit rides by each driver.
-
 Profit ride is when the end location of the current ride is the same as the start location of the next ride.
 
 It is not necessary that the end time of the current ride should be the same as the start time of the next ride to qualify as a profit ride.
@@ -851,7 +848,8 @@ insert into interview_prep..Companies values
 
 select * from interview_prep.dbo.Companies ;
 
-Task from pyspark:Task - The dataset includes company_id, company_name, and multiple date columns representing the stock prices of the company. 
+Task from pyspark:Task - The dataset includes company_id, company_name, and multiple date columns
+representing the stock prices of the company. 
 The task is to generate a new dataset with only three columns, 'company_name', 'Date', 'Stock_price'.
 */
 ;
@@ -946,8 +944,6 @@ Empid	Empname	Department	Salary
 1010	Thiery	Sales	11000
 
 --------------
-SQL
-SQL
 Question 12 of 15
 Angela is working on a complex requirement for which she has written a query:
 Order By Salary)
@@ -955,7 +951,7 @@ Select Empid, Empname, Salary, Rank() Over (Partition By Department,
 From Employee.
 Identify which operator will be used for this query execution.
 Quick Note
-If the question is same as the last one or showing blank content, please click "Reload Question"
+If the question is same as the last one or showing blank content, please click 'Reload Question'
 Assert Operator
 Segment Operator
 Hash Match Operator
@@ -981,3 +977,87 @@ INSERT INTO icc_world_cup values('Aus','India','India');
 
 
 ---------
+𝐓𝐡𝐞 𝐂𝐡𝐚𝐥𝐥𝐞𝐧𝐠𝐞: Given a table with 'brands' and missing 'category' values, can you craft an SQL query that 
+fills those gaps with the last non-null category? (Edit - Lets solve in PySpark)
+
+My PySpark dataframe API solution is in the comment (backward fill concept using last()over()).
+
+	CREATE TABLE interview_prep..Orders (id int,category varchar(20),brand varchar(20));
+insert into interview_prep..Orders VALUES (1,'chocolates','5-star')
+,(2,NULL,'dairy milk'),(3,NULL,'perk'),(4,NULL,'eclair')
+,(5,'Biscuits','britannia'),(6,NULL,'good day'),(7,NULL,'boost')
+
+Select
+id,brand,category
+,last_value(category) OVER(order by id) as Ncategory
+ from interview_prep..Orders
+
+
+-----------------
+
+Task - You are provided with two datasets, branch1 and branch2 , representing information
+ about students and their marks in different subjects across different branches. 
+ Your goal is to combine these datasets into one final dataset. 
+ Missing text information should be shown as 'unknown' ,
+  and missing numerical information should be shown as -9999.
+
+create table interview_prep..branch1 (Branch varchar(20),Student varchar(20),Maths_marks int);
+insert into interview_prep..branch1 values ('Delhi', 'Neha', 90)
+create table interview_prep..branch2 ( Student varchar(20),Branch  varchar(20),Science_marks int,Maths_marks int);
+insert into interview_prep..branch2 values 
+('Arav','Kolkata', 79, 83),(NULL,'Kolkata', 89, 73)
+
+with students_union as (
+	select b1.branch,b1.student,null as science_marks,b1.maths_marks 
+	from interview_prep..branch1 as b1
+	union all
+	select b2.branch,b2.student,b2.science_marks,b2.maths_marks
+	from interview_prep..branch2 as b2
+)
+select branch,coalesce(student,'Unknown') as student
+,coalesce(science_marks,-9999) as science_marks,maths_marks
+from students_union
+
+select @@version
+
+----------------------> from indim soft interview
+create table interview_prep..teams(id int,Team varchar(20));
+insert into interview_prep..teams VALUES
+(1,'India'),(2,'Pakistan'),(3,'Srilanka'),(4,'Australia')
+
+select
+concat(a.team,' vs ',b.team) as matches
+from interview_prep..teams as a
+join interview_prep..teams as b
+on a.id < b.id
+
+select
+concat(a.team,' vs ',b.team) as matches
+from interview_prep..teams as a
+,interview_prep..teams as b
+where a.id < b.id
+
+--->
+Question: You have a table named "Students" with columns "StudentID", "Name", and "Score".
+Write a SQL query to retrieve the top student based on their scores from each subject.
+Include their names scores and subject in the result.			
+			
+create table interview_prep..students_marks (ID int ,Name varchar(20),Subject varchar (20),Marks int)
+insert into interview_prep..students_marks values 
+(1	,'John','Math'	    ,95),(2	,'Emily','Math'	    ,89),
+(3	,'Michael','Math'	,92),(4	,'Sophia','Math'	,98),
+(5	,'William','Math'	,85),(6	,'Olivia','Science' ,91),
+(7	,'James','Science'  ,88),(8	,'Ava','Science'    ,94),
+(9,'Benjamin','Science' ,96),(10,'Mia','Science',    87)
+
+insert into interview_prep..students_marks values 
+(11	,'Harvey','Math',98),(12,'Donna','Science',96)
+
+select * from 
+(select *
+--,row_number() over(PARTITION by subject order by marks desc ) as rownum
+-- ,rank() over(PARTITION by subject order by marks desc) as srank
+,dense_rank() over(order by marks desc ) as densrank
+from interview_prep..students_marks
+) as one
+--where srank=1
