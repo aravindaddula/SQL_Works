@@ -9,7 +9,7 @@ sudo /opt/mssql/bin/mssql-conf setup;
 systemctl status mssql-server --no-pager
 
 
-==for more details follow this url
+====> for more details follow this url
 https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver16&tabs=ubuntu2204
 
 Username: sa
@@ -20,3 +20,9 @@ Settings:
 2.add mssql server at system startup 
 sudo systemctl enable mysql
 sudo systemctl enable mssql-server --no-pager
+
+
+----->sqlserver JDBC URL:
+
+jdbc:sqlserver://localhost;encrypt=true;user=sa;password=Aa7730061615@@;
+

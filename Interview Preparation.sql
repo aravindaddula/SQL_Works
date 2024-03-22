@@ -210,39 +210,26 @@ employeeid ,employee_default_phone_number, totalentry,totallogin,totallogout,lat
 
 */
 -------------------------------------------
-
-/*
-Uber SQL Interview problem to test your problem solving before the next interview.
-Write a query to find total rides and profit rides by each driver.
-Profit ride is when the end location of the current ride is the same as the start location of the next ride.
-
-It is not necessary that the end time of the current ride should be the same as the start time of the next ride to qualify as a profit ride.
-
-Bonus point if you solve it without using lead and lag functions.
-
-script :
-
-create table drivers(id varchar(10), start_time time, end_time time, start_loc varchar(10), end_loc varchar(10));
-
-insert into drivers values('dri_1', '09:00', '09:30', 'a','b'),('dri_1', '09:30', '10:30', 'b','c'),('dri_1','11:00','11:30', 'd','e');
-insert into drivers values('dri_1', '12:00', '12:30', 'f','g'),('dri_1', '13:30', '14:30', 'c','h');
-insert into drivers values('dri_2', '12:15', '12:30', 'f','g'),('dri_2', '13:30', '14:30', 'c','h');
-
-*/
 -------------------------------------------
 
 /*
 Let's understand slowly changing dimensions with simple examples (scd1 and scd2)
 
-Slowly changing dimensions (SCDs) are used in data warehousing to describe how data changes over time. In a typical data warehouse, the data is often updated, inserted, or deleted on a regular basis. SCDs help to manage these changes and maintain a historical record of the data.
+Slowly changing dimensions (SCDs) are used in data warehousing to describe how data changes over time.
+In a typical data warehouse, the data is often updated, inserted, or deleted on a regular basis.
+SCDs help to manage these changes and maintain a historical record of the data.
 
 There are three types of slowly changing dimensions:
 
 Type 1: Overwrite the Existing Data
 
-Type 1 SCDs simply overwrite the existing data with the new data. In other words, they do not keep a historical record of changes. This type of SCD is suitable when the changes in the data are not important, and only the current state of the data is relevant.
+Type 1 SCDs simply overwrite the existing data with the new data.
+ In other words, they do not keep a historical record of changes. 
+ This type of SCD is suitable when the changes in the data are not important, 
+ and only the current state of the data is relevant.
 
-For example, consider a table of customers where the only information that is captured is their name, and address. If a customer changes their address, a type 1 SCD would simply update the existing address in the table.
+For example, consider a table of customers where the only information that is captured is their name, and address. 
+If a customer changes their address, a type 1 SCD would simply update the existing address in the table.
 
 Current state :
 customer id, name , address, last update
@@ -255,7 +242,9 @@ customerid, name , address , last update
 
 Type 2: Add a New Record
 
-Type 2 SCDs keep a historical record of changes by adding a new record to the table. In other words, they maintain a history of changes over time. This type of SCD is useful when the changes in the data are important and need to be tracked.
+Type 2 SCDs keep a historical record of changes by adding a new record to the table. 
+In other words, they maintain a history of changes over time. This type of SCD is useful when 
+the changes in the data are important and need to be tracked.
 
 Let's see how data looks with scd2
 
@@ -263,22 +252,25 @@ Current state :
 customer key, customer id, name , address, effective date , end date
 1, 1, Ankit, Mangalore, 2023-01-01, 9999-12-31
 
-new state
+new state:
 customer key, customer id, name, address , effective date , end date
 1,1, Ankit, 18, Mangalore, 2023-01-01, 2023-05-11
 2, 1, Ankit, 18, Bangalore, 2023-05-12, 9999-12-31
 
 Few things to note here :
 
-1- we have to add 2 extra columns start date and end date to keep the track of which record was active for which date range .
+1- we have to add 2 extra columns start date and end date to keep the track of which record was active for 
+which date range .
 
 2 - we introduced a new column called customer key because customer id can no more be a primary key .
 
 3- this customer key is also known as surrogate key.
 
-4- for the current active record we keep the end date as high date (9999-12-31) so that it stays active forever until we get any new update for the customer.
+4- for the current active record we keep the end date as high date (9999-12-31) so that it stays active forever
+until we get any new update for the customer.
 
-There is one more scd type 3 . Let's see who can explain it with this simple example. comments section is waiting for you.
+There is one more scd type 3 . Let's see who can explain it with this simple example. 
+comments section is waiting for you.
 
 */
 
@@ -307,49 +299,7 @@ Best practices for writing SQL queries:
 
 -------------------------------------------
 /*
-I would have solved hundreds of SQL problems based on the employee and department table in the last 10-12 years.
-But this problem is really a tricky one.
 
-Asked in a PayPal interview here is the problem statement:
-
-We need to obtain a list of departments with an average salary lower than the overall average salary of the company.
-
-However, when calculating the company's average salary, you must exclude the salaries of the department you are comparing it with.
-
-For instance, when comparing the average salary of the HR department with the company's average, the HR department's salaries shouldn't be taken into consideration for the calculation of the company's average salary.
-
-here is the script :
-
-create table emp(
-emp_id int,
-emp_name varchar(20),
-department_id int,
-salary int,
-manager_id int,
-emp_age int);
-
-insert into emp values
-(1, 'Ankit', 100,10000, 4, 39);
-insert into emp
-values (2, 'Mohit', 100, 15000, 5, 48);
-insert into emp
-values (3, 'Vikas', 100, 10000,4,37);
-insert into emp
-values (4, 'Rohit', 100, 5000, 2, 16);
-insert into emp
-values (5, 'Mudit', 200, 12000, 6,55);
-insert into emp
-values (6, 'Agam', 200, 12000,2, 14);
-insert into emp
-values (7, 'Sanjay', 200, 9000, 2,13);
-insert into emp
-values (8, 'Ashish', 200,5000,2,12);
-insert into emp
-values (9, 'Mukesh',300,6000,6,51);
-insert into emp
-values (10, 'Rakesh',300,7000,6,50);
-
-Give it a shot before checking out the solution in the comments section.
 */
 -------------------------------------------
 /*
@@ -1020,7 +970,7 @@ from students_union
 
 select @@version
 
-----------------------> from indim soft interview
+----------------------> from indium soft interview
 create table interview_prep..teams(id int,Team varchar(20));
 insert into interview_prep..teams VALUES
 (1,'India'),(2,'Pakistan'),(3,'Srilanka'),(4,'Australia')
@@ -1030,6 +980,7 @@ concat(a.team,' vs ',b.team) as matches
 from interview_prep..teams as a
 join interview_prep..teams as b
 on a.id < b.id
+order by a.team
 
 select
 concat(a.team,' vs ',b.team) as matches
@@ -1041,23 +992,65 @@ where a.id < b.id
 Question: You have a table named "Students" with columns "StudentID", "Name", and "Score".
 Write a SQL query to retrieve the top student based on their scores from each subject.
 Include their names scores and subject in the result.			
-			
+
+
 create table interview_prep..students_marks (ID int ,Name varchar(20),Subject varchar (20),Marks int)
 insert into interview_prep..students_marks values 
 (1	,'John','Math'	    ,95),(2	,'Emily','Math'	    ,89),
 (3	,'Michael','Math'	,92),(4	,'Sophia','Math'	,98),
 (5	,'William','Math'	,85),(6	,'Olivia','Science' ,91),
 (7	,'James','Science'  ,88),(8	,'Ava','Science'    ,94),
-(9,'Benjamin','Science' ,96),(10,'Mia','Science',    87)
-
-insert into interview_prep..students_marks values 
+(9,'Benjamin','Science' ,96),(10,'Mia','Science',    87),
 (11	,'Harvey','Math',98),(12,'Donna','Science',96)
 
-select * from 
-(select *
+select * from (select *
 --,row_number() over(PARTITION by subject order by marks desc ) as rownum
--- ,rank() over(PARTITION by subject order by marks desc) as srank
-,dense_rank() over(order by marks desc ) as densrank
+--,rank() over(PARTITION by subject order by marks desc) as srank
+,dense_rank() over(PARTITION by subject order by marks desc) as srank
 from interview_prep..students_marks
 ) as one
---where srank=1
+where srank=1
+
+------------------
+/*
+𝐏𝐫𝐨𝐛𝐥𝐞𝐦 𝐒𝐭𝐚𝐭𝐞𝐦𝐞𝐧𝐭:
+𝐘𝐨𝐮 𝐚𝐫𝐞 𝐠𝐢𝐯𝐞𝐧 𝐭𝐡𝐞 𝐩𝐫𝐢𝐜𝐞 𝐨𝐟 𝐞𝐚𝐜𝐡 𝐬𝐤𝐮 𝐰𝐡𝐞𝐧𝐞𝐯𝐞𝐫 𝐭𝐡𝐞𝐫𝐞 𝐢𝐬 𝐚 𝐜𝐡𝐚𝐧𝐠𝐞 𝐢𝐧 𝐩𝐫𝐢𝐜𝐞.
+Write an SQL query 𝐭𝐨 𝐟𝐢𝐧𝐝 𝐭𝐡𝐞 𝐩𝐫𝐢𝐜𝐞 𝐚𝐭 𝐭𝐡𝐞 𝐬𝐭𝐚𝐫𝐭 𝐨𝐟 𝐞𝐚𝐜𝐡 𝐦𝐨𝐧𝐭𝐡 & 𝐜𝐚𝐥𝐜𝐮𝐥𝐚𝐭𝐞 𝐭𝐡𝐞 𝐝𝐢𝐟𝐟𝐞𝐫𝐞𝐧𝐜𝐞 𝐟𝐫𝐨𝐦 𝐭𝐡𝐞 𝐩𝐫𝐞𝐯𝐢𝐨𝐮𝐬 𝐦𝐨𝐧𝐭𝐡'𝐬  𝐬𝐭𝐚𝐫𝐭 𝐝𝐚𝐭𝐞.
+
+𝐓𝐚𝐛𝐥𝐞 𝐒𝐜𝐫𝐢𝐩𝐭:
+
+create table interview_prep..sku (sku_id int,
+price_date date ,
+price int
+);
+insert into interview_prep..sku values
+(1,'2023-01-01',10),(1,'2023-02-15',15),(1,'2023-03-03',18)
+,(1,'2023-03-27',15),(1,'2023-04-06',20);
+
+*/
+select *  FROM interview_prep..sku
+
+    WITH MonthlyPrices AS (
+      SELECT 
+        sku_id,
+        FORMAT(MIN(cast(price_date as date)), 'YY-mm-01') AS start_of_month,
+        MIN(price) AS starting_price
+      FROM interview_prep..sku
+      GROUP BY sku_id, FORMAT(cast(price_date as date), 'YY-mm-01') 
+    )
+    
+    SELECT
+      mp.sku_id,
+      mp.start_of_month,
+      mp.starting_price,
+      LAG(mp.starting_price) OVER (PARTITION BY mp.sku_id ORDER BY mp.start_of_month) AS previous_month_starting_price,
+      mp.starting_price - LAG(mp.starting_price) OVER (PARTITION BY mp.sku_id ORDER BY mp.start_of_month) AS price_difference
+    FROM MonthlyPrices mp
+    ORDER BY mp.sku_id, mp.start_of_month
+
+
+	select format(cast('2023-01-01' as date), '25-MM-yy' )
+
+
+
+
